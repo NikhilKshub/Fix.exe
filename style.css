@@ -1,0 +1,22 @@
+:root{
+    --desk:#d591f3;
+    --paper:#e9dfc8;
+    --title:#c45538;
+    --ink:#2b2622;
+    --bar:#1d1a17;
+    --money:#7a9a4a;
+    --warn:#d9a22b;
+    --static:#5fa8a0;
+    --border: 2px solid var(--ink);
+}
+*{box-sizing: border-box;}
+
+body{
+    margin:0;
+    height: 100vh;
+    background:var(--desk);
+    color:var(--ink);
+    font-family:'Courier Prime', monospace;
+    display:flex;
+    flex-direction:column;
+}
