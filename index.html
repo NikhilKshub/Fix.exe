@@ -7,6 +7,55 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <p>Fix.exe</p>
+    <main id="desktop">
+        <button class="app-icon">Jobs</button>
+        <button class="app-icon">Tracking</button>
+        <button class="app-icon">Workbench</button>
+
+        <div class="window" id="jobs-window">
+            <div class="titlebar">
+                <span>Jobs</span>
+                <button class="close-button">x</button>
+            </div>
+            <div class="window-body">
+                job list goes here 
+            </div>
+        </div>
+        
+        <div class="window" id="tracking-window" hidden>
+            <div class="titlebar">
+                <span>Tracking</span>
+                <button class="close-button">x</button>
+            </div>
+            <div class="window-body">
+                tracking goes here
+            </div>
+        </div>
+
+        <div class="window" id="Workbench-window" hidden>
+            <div class="titlebar">
+                <span>Workbench</span>
+                <button class="close-button">x</button>
+            </div>
+            <div class="window-body">
+                work goes here
+            </div>
+        </div>
+        
+    </main>
+
+    <footer id="taskbar">
+        <span id="day">Day 1</span>
+        <span id="money">$0</span>
+        <span id="clock">09:00</span>
+    </footer>
+
+
+
+
+
+
+
+    <script src="script.js"></script>
 </body>
 </html>
