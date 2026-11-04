@@ -20,3 +20,23 @@ body{
     display:flex;
     flex-direction:column;
 }
+
+#desktop{
+    flex:1;
+    position: relative;
+    overflow:hidden;
+}
+
+#taskbar{
+    height: 40px;
+    background:var(--bar);
+    color:var(--paper);
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    border-top: 1px solid var(--border);
+    font-size:25px;
+    font-family:'Jersey 10', sans-serif;
+}
+#money{color:var(--money);}
