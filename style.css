@@ -49,6 +49,54 @@ body{
     box-shadow:2px 2px 0 var(--ink);
 }
 
+.window{
+    position: absolute;
+    width: 420px;
+    background:var(--paper);
+    border:var(--border);
+    box-shadow:6px 6px 0 var(--ink);
+    border-radius: 7px;
+}
+
+#jobs-window{
+    top:80px;
+    left:280px;
+}
+
+#tracking-window{
+    top:140px;
+    left: 300px;
+}
+
+#workbench-window{
+    top:200px;
+    left:350px;
+}
+
+.titlebar{
+    background: var(--title);
+    color:var(--paper);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 5px;
+    border-bottom:1px solid var(--border);
+    font-family:'Jersey 10', sans-serif;
+    font-size: 22px;
+}
+.window-body{padding:20px;}
+
+.close-button{
+    background:var(--paper);
+    border: var(--border);
+    font-family: 'Jersey 10', sans-serif;
+    cursor: pointer;
+    font-size:15px;
+}
+
+
+
 #taskbar{
     height: 40px;
     background:var(--bar);
