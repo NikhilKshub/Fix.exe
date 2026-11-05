@@ -1,4 +1,6 @@
 let topLayer = 1;
+let gapX = 0;
+let gapY = 0;
 
 function bringToFront(windowBox) {
     topLayer++;
@@ -29,3 +31,22 @@ for (const windowBox of windows) {
         bringToFront(windowBox);
     });
 }
+
+const titlebars = document.querySelectorAll(".titlebar");
+for (const titlebar of titlebars) {
+    titlebar.addEventListener("mousedown", function (event) {
+        draggedWindow = titlebar.closest(".window");
+        gapX = event.clientX - draggedWindow.offsetLeft;
+        gapY = event.clientY - draggedWindow.offsetTop;
+    });
+}
+
+document.addEventListener("mousemove", function(event){
+    if(draggedWindow === null) return;
+    draggedWindow.style.left = (event.clientX - gapX) + "px";
+    draggedWindow.style.top = (event.clientY - gapY) + "px";
+})
+
+document.addEventListener("mouseup", function(){
+    draggedWindow = null;
+})

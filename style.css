@@ -84,6 +84,8 @@ body{
     border-bottom:var(--border);
     font-family:'Jersey 10', sans-serif;
     font-size: 22px;
+    cursor : grab;
+    user-select: none;
 }
 .window-body{padding:20px;}
 
