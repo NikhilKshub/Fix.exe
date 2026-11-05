@@ -1,6 +1,26 @@
 let topLayer = 1;
 let gapX = 0;
 let gapY = 0;
+let day = 1;
+let minutes = 9 * 60;
+
+function showTime(){
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    const hoursText = String(hours).padStart(2, "0");
+    const minsText = String(mins).padStart(2,"0");
+    document.getElementById("clock").textContent = hoursText + ":" + minsText;
+}
+showTime();
+setInterval(function(){
+    minutes += 1;
+    if(minutes >= 18 * 60){
+        day++;
+        minutes = 9 * 60;
+        document.getElementById("day").textContent = "Day " + day;
+    }
+    showTime();
+}, 1000);
 
 function bringToFront(windowBox) {
     topLayer++;
