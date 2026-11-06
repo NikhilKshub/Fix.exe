@@ -61,6 +61,7 @@ body{
 #jobs-window{
     top:80px;
     left:280px;
+    width: 570px;
 }
 
 #tracking-window{
@@ -87,7 +88,13 @@ body{
     cursor : grab;
     user-select: none;
 }
-.window-body{padding:20px;}
+.window-body{
+    background: var(--paper);
+    border: var(--border);
+    padding: 6px 10px;
+    font-family:'Courier Prime',monospace;
+}
+h2{font-family:'Jersey 10', sans-serif;}
 
 .close-button{
     background:var(--paper);
