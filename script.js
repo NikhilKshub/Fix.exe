@@ -1,4 +1,5 @@
 let topLayer = 1;
+let draggedWindow = null;
 let gapX = 0;
 let gapY = 0;
 let day = 1;
@@ -70,3 +71,23 @@ document.addEventListener("mousemove", function(event){
 document.addEventListener("mouseup", function(){
     draggedWindow = null;
 })
+
+const jobList = document.getElementById("job-list");
+for(const job of jobs){
+    const card = document.createElement("div");
+    card.className = "job-card";
+
+    const customer = document.createElement("p");
+    customer.textContent = job.customer;
+
+    const device = document.createElement("p");
+    device.textContent = job.device;
+
+    const viewButton = document.createElement("button");
+    viewButton.textContent = "View";
+
+    card.appendChild(customer);
+    card.appendChild(device);
+    card.appendChild(viewButton);
+    jobList.appendChild(card);
+}
