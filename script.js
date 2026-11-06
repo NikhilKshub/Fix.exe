@@ -34,6 +34,7 @@ setInterval(function(){
         for(let i=0; i<howMany; i++){
             postRandomJob();
         }
+        showNotice("New job posted");
         nextJobTime = minutes + 20 + Math.floor(Math.random()*70);
     }
     showTime();
@@ -44,6 +45,14 @@ function showMoney(){
 }
 showMoney();
 
+function showNotice(text){
+    const notice = document.getElementById("notice");
+    notice.textContent = text;
+    notice.hidden = false;
+    setTimeout(function(){
+        notice.hidden = true;
+    }, 2500);
+}
 
 
 
@@ -105,7 +114,7 @@ document.addEventListener("mouseup", function(){
 
 // job cards
 const jobList = document.getElementById("job-list");
-function showJob(job){
+function showJob(job) {
     const card = document.createElement("div");
     card.className = "job-card";
 
@@ -120,12 +129,11 @@ function showJob(job){
 
     const viewButton = document.createElement("button");
     viewButton.textContent = "View";
-
-    viewButton.addEventListener("click", function(){
+    viewButton.addEventListener("click",function(){
         chosenJob = job;
         chosenCard = card;
         document.getElementById("popup-customer").textContent = job.customer;
-        document.getElementById("popup-story").textcontent = job.story;
+        document.getElementById("popup-story").textContent = job.story;
         document.getElementById("popup-contact").textContent = job.contact;
         document.getElementById("popup-pay").textContent = "pay: $" + job.pay;
         document.getElementById("job-popup").hidden = false;
