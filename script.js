@@ -135,6 +135,11 @@ function showJob(job) {
         document.getElementById("popup-customer").textContent = job.customer;
         document.getElementById("popup-story").textContent = job.story;
         document.getElementById("popup-contact").textContent = job.contact;
+        if(job.link !== ""){
+            document.getElementById("popup-link").textContent = "see the damage: " + job.link;
+        } else {
+            document.getElementById("popup-link").textContent = "";
+        }
         document.getElementById("popup-pay").textContent = "pay: $" + job.pay;
         document.getElementById("job-popup").hidden = false;
     });
@@ -154,22 +159,15 @@ function postRandomJob(){
 postRandomJob();
 
 
-
-document.getElementById("accept-button").addEventListener("click", function(){
-    if(chosenJob.scam === true){
-        money = money - 30;
-        showMoney();
-        document.getElementById("popup-story").textContent = "It was a scam. You lost $30.";
-    } else {
-        const trackingId = makeTrackingId();
-        acceptedJobs.push({
-            job: chosenJob,
-            trackingId: trackingId,
-            status:"packed",
-            day: day
-        });
-        document.getElementById("popup-story").textContent = "Accepted. Your tracking ID is " + trackingId;
-    }
+document.getElementById("accept-button").addEventListener("click",function(){
+    const trackingId = makeTrackingId();
+    acceptedJobs.push({
+        job: chosenJob,
+        trackingId: trackingId,
+        status:"packed",
+        day: day
+    });
+    document.getElementById("popup-story").textContent = "Accepted. Your tracking ID is " + trackingId;
     chosenCard.remove();
     console.log(acceptedJobs);
     setTimeout(function(){
@@ -186,3 +184,8 @@ document.getElementById("popup-close").addEventListener("click", function(){
     document.getElementById("job-popup").hidden = true;
 })
 
+document.getElementById("popup-link").addEventListener("click",function(){
+    if(chosenJob.scam){
+        console.log("hacked");
+    }
+});
