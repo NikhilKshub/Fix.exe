@@ -4,6 +4,7 @@ let gapX = 0;
 let gapY = 0;
 let day = 1;
 let minutes = 9 * 60;
+let nextJobTime = 9 * 60 + 5;
 let chosenJob = null;
 let money = 50;
 const acceptedJobs = [];
@@ -22,10 +23,18 @@ function showTime(){
 showTime();
 setInterval(function(){
     minutes += 1;
-    if(minutes >= 18 * 60){
+    if(minutes >= 18*60){
         day++;
         minutes = 9 * 60;
+        nextJobTime = 9 * 60 + 5;
         document.getElementById("day").textContent = "Day " + day;
+    }
+    if(minutes >= nextJobTime){
+        const howMany = Math.floor(Math.random() * 3) + 1;
+        for(let i=0; i<howMany; i++){
+            postRandomJob();
+        }
+        nextJobTime = minutes + 20 + Math.floor(Math.random()*70);
     }
     showTime();
 }, 1000);
@@ -134,6 +143,7 @@ function postRandomJob(){
     const job = waitingJobs.splice(index,1)[0];
     showJob(job);
 }
+postRandomJob();
 
 
 
