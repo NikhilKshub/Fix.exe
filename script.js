@@ -5,8 +5,10 @@ let gapY = 0;
 let day = 1;
 let minutes = 9 * 60;
 let chosenJob = null;
+const acceptedJobs = [];
+let chosenCard = null;
 
-
+// time 
 function showTime(){
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
@@ -25,6 +27,13 @@ setInterval(function(){
     showTime();
 }, 1000);
 
+// accepting jobs (tracking)
+function makeTrackingId(){
+    const number = Math.floor(Math.random() * 90000) + 10000;
+    return "PX-" + number + "-IN";
+}
+
+// window functions 
 function bringToFront(windowBox) {
     topLayer++;
     windowBox.style.zIndex = topLayer;
@@ -74,6 +83,7 @@ document.addEventListener("mouseup", function(){
     draggedWindow = null;
 })
 
+// job cards
 const jobList = document.getElementById("job-list");
 for(const job of jobs){
     const card = document.createElement("div");
@@ -93,19 +103,39 @@ for(const job of jobs){
 
     viewButton.addEventListener("click",function(){
         chosenJob = job;
+        chosenCard = card;
         document.getElementById("popup-customer").textContent = job.customer;
         document.getElementById("popup-story").textContent = job.story;
         document.getElementById("popup-contact").textContent = job.contact;
         document.getElementById("popup-pay").textContent = "pay: $" + job.pay;
         document.getElementById("job-popup").hidden = false;
     });
-
     card.appendChild(avatar);
     card.appendChild(customer);
     card.appendChild(device);
     card.appendChild(viewButton);
     jobList.appendChild(card);
 }
+
+
+document.getElementById("accept-button").addEventListener("click",function(){
+    const trackingId = makeTrackingId();
+    acceptedJobs.push({
+        job: chosenJob,
+        trackingId: trackingId,
+        status: "packed",
+        day: day
+    });
+    document.getElementById("popup-story").textContent = "Accepted. Your tracking ID is " + trackingId;
+    chosenCard.remove();
+    console.log(acceptedJobs);
+    setTimeout(function(){
+        document.getElementById("job-popup").hidden = true;
+    },1500);
+});
+
+
+
 
 document.getElementById("later-button").addEventListener("click", function(){
     document.getElementById("job-popup").hidden = true;
