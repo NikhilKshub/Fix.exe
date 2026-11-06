@@ -53,7 +53,6 @@ function bringToFront(windowBox) {
 
 const icons = document.querySelectorAll(".app-icon");
 for (const icon of icons) {
-    console.log(icon.dataset.window);
     icon.addEventListener("click", function () {
         const windowBox = document.getElementById(icon.dataset.window);
         windowBox.hidden = false;
@@ -88,7 +87,7 @@ for (const titlebar of titlebars) {
 document.addEventListener("mousemove", function(event){
     if(draggedWindow === null) return;
     draggedWindow.style.left = (event.clientX - gapX) + "px";
-    draggedWindow.style.top = (event.clientY - gapY) + "px";
+    draggedWindow.style.top = Math.max(0, event.clientY - gapY) + "px";
 })
 
 document.addEventListener("mouseup", function(){
@@ -153,7 +152,10 @@ document.getElementById("accept-button").addEventListener("click", function(){
 });
 
 
-
 document.getElementById("later-button").addEventListener("click", function(){
     document.getElementById("job-popup").hidden = true;
 });
+
+document.getElementById("popup-close").addEventListener("click", function(){
+    document.getElementById("job-popup").hidden = true;
+})
