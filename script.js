@@ -5,8 +5,11 @@ let gapY = 0;
 let day = 1;
 let minutes = 9 * 60;
 let chosenJob = null;
+let money = 50;
 const acceptedJobs = [];
 let chosenCard = null;
+
+
 
 // time 
 function showTime(){
@@ -26,6 +29,15 @@ setInterval(function(){
     }
     showTime();
 }, 1000);
+
+function showMoney(){
+    document.getElementById("money").textContent = "$" + money;
+}
+showMoney();
+
+
+
+
 
 // accepting jobs (tracking)
 function makeTrackingId(){
@@ -118,22 +130,27 @@ for(const job of jobs){
 }
 
 
-document.getElementById("accept-button").addEventListener("click",function(){
-    const trackingId = makeTrackingId();
-    acceptedJobs.push({
-        job: chosenJob,
-        trackingId: trackingId,
-        status: "packed",
-        day: day
-    });
-    document.getElementById("popup-story").textContent = "Accepted. Your tracking ID is " + trackingId;
+document.getElementById("accept-button").addEventListener("click", function(){
+    if(chosenJob.scam === true){
+        money = money - 30;
+        showMoney();
+        document.getElementById("popup-story").textContent = "It was a scam. You lost $30.";
+    } else {
+        const trackingId = makeTrackingId();
+        acceptedJobs.push({
+            job: chosenJob,
+            trackingId: trackingId,
+            status:"packed",
+            day: day
+        });
+        document.getElementById("popup-story").textContent = "Accepted. Your tracking ID is " + trackingId;
+    }
     chosenCard.remove();
     console.log(acceptedJobs);
     setTimeout(function(){
         document.getElementById("job-popup").hidden = true;
     },1500);
 });
-
 
 
 
