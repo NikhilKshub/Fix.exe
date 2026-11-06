@@ -4,6 +4,8 @@ let gapX = 0;
 let gapY = 0;
 let day = 1;
 let minutes = 9 * 60;
+let chosenJob = null;
+
 
 function showTime(){
     const hours = Math.floor(minutes / 60);
@@ -77,6 +79,9 @@ for(const job of jobs){
     const card = document.createElement("div");
     card.className = "job-card";
 
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+
     const customer = document.createElement("p");
     customer.textContent = job.customer;
 
@@ -86,8 +91,22 @@ for(const job of jobs){
     const viewButton = document.createElement("button");
     viewButton.textContent = "View";
 
+    viewButton.addEventListener("click",function(){
+        chosenJob = job;
+        document.getElementById("popup-customer").textContent = job.customer;
+        document.getElementById("popup-story").textContent = job.story;
+        document.getElementById("popup-contact").textContent = job.contact;
+        document.getElementById("popup-pay").textContent = "pay: $" + job.pay;
+        document.getElementById("job-popup").hidden = false;
+    });
+
+    card.appendChild(avatar);
     card.appendChild(customer);
     card.appendChild(device);
     card.appendChild(viewButton);
     jobList.appendChild(card);
 }
+
+document.getElementById("later-button").addEventListener("click", function(){
+    document.getElementById("job-popup").hidden = true;
+});

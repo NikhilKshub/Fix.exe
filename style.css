@@ -93,6 +93,7 @@ body{
     border: var(--border);
     padding: 6px 10px;
     font-family:'Courier Prime',monospace;
+    position:relative;
 }
 h2{font-family:'Jersey 10', sans-serif;}
 
@@ -119,3 +120,37 @@ h2{font-family:'Jersey 10', sans-serif;}
     font-family:'Jersey 10', sans-serif;
 }
 #money{color:var(--money);}
+
+.job-card{
+    border: var(--border);
+    padding:10px;
+    margin-bottom:12px;
+    background:var(--paper);
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:var(--static);
+}
+
+.job-card button{
+    background: var(--paper);
+    border:var(--border);
+    font-family:'Jersey 10',sans-serif;
+    cursor:pointer;
+}
+
+#job-popup{
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:var(--paper);
+    border:var(--border);
+    padding:20px;
+}
