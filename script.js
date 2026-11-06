@@ -169,6 +169,69 @@ function postRandomJob(){
 }
 postRandomJob();
 
+function makeHackWindow(){
+    const desktop = document.getElementById("desktop");
+    const box = document.createElement("div");
+    box.className = "hack-window";
+
+    const header = document.createElement("span");
+    header.className = "hack-header";
+
+    const title = document.createElement("span");
+    title.textContent = "SYSTEM WARNING";
+
+    const closeButton = document.createElement("button");
+    closeButton.textContent = "x";
+
+    const body = document.createElement("div");
+    body.className = "hack-body";
+
+    const message = document.createElement("p");
+    const index = Math.floor(Math.random() * hackMessages.length);
+    message.textContent = hackMessages[index];
+
+    header.appendChild(title);
+    header.appendChild(closeButton);
+    body.appendChild(message);
+    box.appendChild(header);
+    box.appendChild(body);
+
+    box.style.left = Math.floor(Math.random() * (desktop.clientWidth - 280)) + "px";
+    box.style.top = Math.floor(Math.random() * (desktop.clientHeight - 160)) + "px";
+
+    topLayer++;
+    box.style.zIndex = topLayer;
+    
+    closeButton.addEventListener("click", function(){
+        box.remove();
+        hackWindows--;
+
+        if(hackWindows === 0){
+            clearInterval(hackTimer);
+            showNotice("Haha you actually fell for that!, its fine. Virus removed. It cost you $" + hackLoss);
+            hackLoss = 0;
+        }
+    });
+    desktop.appendChild(box);
+}
+
+function startHack(){
+    if(hackWindows > 0) return;
+    document.getElementById("job-popup").hidden = true;
+    hackWindows = 8;
+    hackLoss = 0 ;
+    for(let i=0; i<8; i++){
+        setTimeout(makeHackWindow, i * 400);
+    }
+    hackTimer = setInterval(function(){
+        if(hackLoss >= 30) return;
+        money = Math.max(0 , money - 2);
+        hackLoss +=2;
+        showMoney();
+    },1000);
+}
+
+
 
 document.getElementById("accept-button").addEventListener("click",function(){
     const trackingId = makeTrackingId();
