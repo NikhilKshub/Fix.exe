@@ -97,7 +97,7 @@ body{
 }
 h2{font-family:'Jersey 10', sans-serif;}
 
-.close-button{
+.close-button, .hack-header button{
     background:var(--paper);
     border: var(--border);
     font-family: 'Jersey 10', sans-serif;
@@ -198,12 +198,11 @@ h2{font-family:'Jersey 10', sans-serif;}
     border:var(--border);
     font-family:'Jersey 10', sans-serif;
     cursor:pointer;
-    justify-content: center;
-    display:flex;
-    gap: 12px;
     font-size:22px;
-
+    padding: 6px 14px;
 }
+#accept-button:disabled{opacity:0.5; cursor:default;}
+
 .popup-actions{
     display:flex;
     justify-content: center;
@@ -229,20 +228,25 @@ h2{font-family:'Jersey 10', sans-serif;}
     font-size: 24px;
 }
 
-/* fake hack website  */
+/* fake hack troll */
 .hack-window{
     position:absolute;
     width:260px;
-    background:var(--paper);
+    height:200px;
+    background:var(--title);
+    color:var(--paper);
     border:var(--border);
     box-shadow:4px 4px 0 var(--ink);
 }
-
 .hack-header{
-    background:var(--warm);
+    background:var(--warn);
     color:var(--ink);
     display:flex;
     justify-content: space-between;
     align-items: center;
     padding:6px 10px;
+    border-bottom: var(--border);
+    font-family: 'Jersey 10', sans-serif;
+    font-size: 22px;
 }
+.hack-body{padding:12px;}

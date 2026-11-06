@@ -13,6 +13,8 @@ let hackLoss = 0;
 let hackTimer = null;
 let chosenCard = null;
 const waitingJobs = jobs.slice();
+const virusSound = new Audio("assets/virussound.mp3");
+virusSound.volume = 0.4;
 
 // time 
 function showTime(){
@@ -24,7 +26,7 @@ function showTime(){
 }
 showTime();
 setInterval(function(){
-    minutes += 1;
+    minutes += 10;
     if(minutes >= 18*60){
         day++;
         minutes = 9 * 60;
@@ -33,10 +35,13 @@ setInterval(function(){
     }
     if(minutes >= nextJobTime){
         const howMany = Math.floor(Math.random() * 3) + 1;
-        for(let i=0; i<howMany; i++){
+        const hadJobs = waitingJobs.length > 0;
+        for(let i = 0; i < howMany; i++){
             postRandomJob();
         }
-        showNotice("New job posted");
+        if(hadJobs){
+            showNotice("New job posted");
+        }
         nextJobTime = minutes + 20 + Math.floor(Math.random()*70);
     }
     showTime();
@@ -125,6 +130,7 @@ document.addEventListener("mouseup", function(){
 
 // job cards
 const jobList = document.getElementById("job-list");
+const acceptButton = document.getElementById("accept-button");
 function showJob(job) {
     const card = document.createElement("div");
     card.className = "job-card";
@@ -143,6 +149,7 @@ function showJob(job) {
     viewButton.addEventListener("click",function(){
         chosenJob = job;
         chosenCard = card;
+        acceptButton.disabled = false;
         document.getElementById("popup-customer").textContent = job.customer;
         document.getElementById("popup-story").textContent = job.story;
         document.getElementById("popup-contact").textContent = job.contact;
@@ -198,16 +205,16 @@ function makeHackWindow(){
 
     box.style.left = Math.floor(Math.random() * (desktop.clientWidth - 280)) + "px";
     box.style.top = Math.floor(Math.random() * (desktop.clientHeight - 160)) + "px";
-
     topLayer++;
     box.style.zIndex = topLayer;
     
     closeButton.addEventListener("click", function(){
         box.remove();
         hackWindows--;
-
         if(hackWindows === 0){
             clearInterval(hackTimer);
+            virusSound.pause();
+            virusSound.currentTime = 0;
             showNotice("Haha you actually fell for that!, its fine. Virus removed. It cost you $" + hackLoss);
             hackLoss = 0;
         }
@@ -220,6 +227,7 @@ function startHack(){
     document.getElementById("job-popup").hidden = true;
     hackWindows = 8;
     hackLoss = 0 ;
+    virusSound.play();
     for(let i=0; i<8; i++){
         setTimeout(makeHackWindow, i * 400);
     }
@@ -234,6 +242,7 @@ function startHack(){
 
 
 document.getElementById("accept-button").addEventListener("click",function(){
+    acceptButton.disabled = true;
     const trackingId = makeTrackingId();
     acceptedJobs.push({
         job: chosenJob,
@@ -258,8 +267,8 @@ document.getElementById("popup-close").addEventListener("click", function(){
     document.getElementById("job-popup").hidden = true;
 })
 
-document.getElementById("popup-link").addEventListener("click",function(){
+document.getElementById("popup-link").addEventListener("click", function(){
     if(chosenJob.scam){
-        console.log("hacked");
+        startHack();
     }
 });
