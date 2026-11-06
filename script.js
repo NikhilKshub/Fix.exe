@@ -8,9 +8,11 @@ let nextJobTime = 9 * 60 + 5;
 let chosenJob = null;
 let money = 50;
 const acceptedJobs = [];
+let hackWindows = 0;
+let hackLoss = 0;
+let hackTimer = null;
 let chosenCard = null;
 const waitingJobs = jobs.slice();
-
 
 // time 
 function showTime(){
@@ -44,6 +46,15 @@ function showMoney(){
     document.getElementById("money").textContent = "$" + money;
 }
 showMoney();
+
+const hackMessages = [
+    "Totally Real Antivirus found 47 viruses!!! 🦠",
+    "You are visitor number 1,000,000! Claim NOW! 🎉",
+    "Your computer has been selected for a FREE upgrade!  💻",
+    "ERROR! Your sandwich has been compromised! 🥪",
+    "Congratulations! You won absolutely nothing! 🎁",
+    "Your keyboard is now legally our property! ⌨️"
+];
 
 function showNotice(text){
     const notice = document.getElementById("notice");

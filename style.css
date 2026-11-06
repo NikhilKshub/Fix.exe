@@ -228,3 +228,21 @@ h2{font-family:'Jersey 10', sans-serif;}
     font-family: 'Jersey 10', sans-serif;
     font-size: 24px;
 }
+
+/* fake hack website  */
+.hack-window{
+    position:absolute;
+    width:260px;
+    background:var(--paper);
+    border:var(--border);
+    box-shadow:4px 4px 0 var(--ink);
+}
+
+.hack-header{
+    background:var(--warm);
+    color:var(--ink);
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:6px 10px;
+}
