@@ -8,7 +8,7 @@ let chosenJob = null;
 let money = 50;
 const acceptedJobs = [];
 let chosenCard = null;
-
+const waitingJobs = jobs.slice();
 
 
 // time 
@@ -96,7 +96,7 @@ document.addEventListener("mouseup", function(){
 
 // job cards
 const jobList = document.getElementById("job-list");
-for(const job of jobs){
+function showJob(job){
     const card = document.createElement("div");
     card.className = "job-card";
 
@@ -112,11 +112,11 @@ for(const job of jobs){
     const viewButton = document.createElement("button");
     viewButton.textContent = "View";
 
-    viewButton.addEventListener("click",function(){
+    viewButton.addEventListener("click", function(){
         chosenJob = job;
         chosenCard = card;
         document.getElementById("popup-customer").textContent = job.customer;
-        document.getElementById("popup-story").textContent = job.story;
+        document.getElementById("popup-story").textcontent = job.story;
         document.getElementById("popup-contact").textContent = job.contact;
         document.getElementById("popup-pay").textContent = "pay: $" + job.pay;
         document.getElementById("job-popup").hidden = false;
@@ -127,6 +127,14 @@ for(const job of jobs){
     card.appendChild(viewButton);
     jobList.appendChild(card);
 }
+
+function postRandomJob(){
+    if(waitingJobs.length === 0) return;
+    const index = Math.floor(Math.random() * waitingJobs.length);
+    const job = waitingJobs.splice(index,1)[0];
+    showJob(job);
+}
+
 
 
 document.getElementById("accept-button").addEventListener("click", function(){
@@ -159,3 +167,4 @@ document.getElementById("later-button").addEventListener("click", function(){
 document.getElementById("popup-close").addEventListener("click", function(){
     document.getElementById("job-popup").hidden = true;
 })
+
