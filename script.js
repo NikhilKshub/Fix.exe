@@ -8,6 +8,7 @@ let totalMinutes = 0;
 let nextJobTime = 9 * 60 + 5;
 let chosenJob = null;
 let money = 50;
+let repairEntry = null;
 const acceptedJobs = [];
 let hackWindows = 0;
 let hackLoss = 0;
@@ -150,6 +151,11 @@ document.addEventListener("mouseup", function(){
 const jobList = document.getElementById("job-list");
 const acceptButton = document.getElementById("accept-button");
 const repairList = document.getElementById("repair-list");
+const stage = document.getElementById("repair-stage");
+const frequencyGame = document.getElementById("frequency-game");
+const caption = document.getElementById("stage-caption");
+
+
 
 function addAcceptedLine(customer, trackingId){
     const line = document.createElement("p");
@@ -172,7 +178,7 @@ function refreshWorkbench(){
             repairButton.textContent = "Repair";
 
             repairButton.addEventListener("click", function(){
-                console.log(entry.job.minigame);
+                startRepair(entry);
             });
             row.appendChild(details);
             row.appendChild(repairButton);
@@ -186,6 +192,26 @@ function refreshWorkbench(){
         repairList.appendChild(message);
     }
 }
+
+function startRepair(entry) {
+    if (entry.job.minigame === "frequency") {
+        repairEntry = entry;
+        stage.hidden = false;
+        frequencyGame.hidden = false;
+        caption.textContent = "Adjust the sliders until the picture is still and clear.";
+    } else {
+        showNotice("Data recovery repairs come in the next phase");
+    }
+}
+
+function closeStage(){
+    stage.hidden = true;
+    frequencyGame.hidden = true;
+    refreshWorkbench();
+}
+
+
+
 
 function showJob(job) {
     const card = document.createElement("div");
@@ -328,6 +354,10 @@ document.getElementById("popup-link").addEventListener("click", function(){
     if(chosenJob.scam){
         startHack();
     }
+});
+
+document.getElementById("leave-button").addEventListener("click", function() {
+    closeStage();
 });
 
 // tracking 

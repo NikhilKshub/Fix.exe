@@ -289,3 +289,20 @@ h2{font-family:'Jersey 10', sans-serif;}
     padding:6px 14px;
     font-size:20px;
 }
+
+.repair-stage{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:8000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background-color: var(--bar);
+    background-image:
+        linear-gradient(rgba(233, 223, 200, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(233, 223, 200, 0.08) 1px, transparent 1px);
+    background-size:32px 32px;
+}

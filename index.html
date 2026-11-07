@@ -74,8 +74,37 @@
             </div>
         </div>
 
-        <div id="notice" hidden></div>
+        <div id="repair-stage" hidden>
+            <button id="leave-button">← Leave repair</button>
 
+            <div id="frequency-game" hidden>
+                <div class="phone">
+                    <canvas id="static-canvas" width="240" height="400"></canvas>
+                </div>
+                <div class="control-panel">
+                    <h3>Signal</h3>
+                    <p id="signal-text"></p>
+
+                    <div class="slider-row">
+                        <label for="slider-wobble">Wobble</label>
+                        <input type="range" id="slider-wobble" min="0" max="100">
+                    </div>
+
+                    <div class="slider-row">
+                        <label for="slider-static">Static</label>
+                        <input type="range" id="slider-static" min="0" max="100">
+                    </div>
+
+                    <div class="slider-row">
+                        <label for="slider-roll">Roll</label>
+                        <input type="range" id="slider-roll" min="0" max="100">
+                    </div>
+                </div>
+            </div>
+            <p id="stage-caption"></p>
+        </div>
+
+        <div id="notice" hidden></div>
     </main>
 
     <footer id="taskbar">
@@ -83,13 +112,7 @@
         <span id="money">$0</span>
         <span id="clock">09:00</span>
     </footer>
-
-
-
-
-
-
-
+    
     <script src="jobs.js"></script>
     <script src="script.js"></script>
 </body>
