@@ -26,7 +26,7 @@ function showTime(){
 }
 showTime();
 setInterval(function(){
-    minutes += 10;
+    minutes += 1;
     if(minutes >= 18*60){
         day++;
         minutes = 9 * 60;
@@ -131,6 +131,13 @@ document.addEventListener("mouseup", function(){
 // job cards
 const jobList = document.getElementById("job-list");
 const acceptButton = document.getElementById("accept-button");
+
+function addAcceptedLine(customer, trackingId){
+    const line = document.createElement("p");
+    line.textContent = customer + " - " + trackingId;
+    document.getElementById("accepted-list").appendChild(line);
+}
+
 function showJob(job) {
     const card = document.createElement("div");
     card.className = "job-card";
@@ -250,6 +257,7 @@ document.getElementById("accept-button").addEventListener("click",function(){
         status:"packed",
         day: day
     });
+    addAcceptedLine(chosenJob.customer, trackingId);
     document.getElementById("popup-story").textContent = "Accepted. Your tracking ID is " + trackingId;
     chosenCard.remove();
     console.log(acceptedJobs);
