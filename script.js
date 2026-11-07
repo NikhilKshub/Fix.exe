@@ -4,6 +4,7 @@ let gapX = 0;
 let gapY = 0;
 let day = 1;
 let minutes = 9 * 60;
+let totalMinutes = 0;
 let nextJobTime = 9 * 60 + 5;
 let chosenJob = null;
 let money = 50;
@@ -27,6 +28,7 @@ function showTime(){
 showTime();
 setInterval(function(){
     minutes += 1;
+    totalMinutes +=1;
     if(minutes >= 18*60){
         day++;
         minutes = 9 * 60;
@@ -77,6 +79,15 @@ function showNotice(text){
 function makeTrackingId(){
     const number = Math.floor(Math.random() * 90000) + 10000;
     return "PX-" + number + "-IN";
+}
+
+function getStatus(entry){
+    if(entry.job.scam === true) return "Cancelled by sender. Possible fraud.";
+    const age = totalMinutes - entry.acceptedAt;
+    if(age < 30)return "Packed";
+    if(age < 90)return "In transit";
+    if(age< 150)return "Out for delivery";
+    return "Delivered";
 }
 
 // window functions 
@@ -252,10 +263,11 @@ document.getElementById("accept-button").addEventListener("click",function(){
     acceptButton.disabled = true;
     const trackingId = makeTrackingId();
     acceptedJobs.push({
-        job: chosenJob,
+        job:chosenJob,
         trackingId: trackingId,
-        status:"packed",
-        day: day
+        acceptedAt: totalMinutes,
+        delivered:false,
+        day:day
     });
     addAcceptedLine(chosenJob.customer, trackingId);
     document.getElementById("popup-story").textContent = "Accepted. Your tracking ID is " + trackingId;
@@ -281,25 +293,29 @@ document.getElementById("popup-link").addEventListener("click", function(){
     }
 });
 
+// tracking 
 const trackingInput = document.getElementById("tracking-input");
 const trackButton = document.getElementById("track-button");
 const trackingResult = document.getElementById("tracking-result");
-
 trackButton.addEventListener("click", function(){
     const typedId = trackingInput.value.trim().toUpperCase();
-
     let found = null;
-
     for (const entry of acceptedJobs) {
         if (entry.trackingId === typedId) {
             found = entry;
             break;
         }
     }
-
     if (found === null) {
         trackingResult.textContent = "No parcel found for this ID.";
     } else {
-        trackingResult.textContent = "Parcel for " + found.job.customer + " (" + found.job.device + ")";
+        trackingResult.textContent = "";
+        const parcelLine = document.createElement("p");
+        parcelLine.textContent = "Parcel for " + found.job.customer + " (" + found.job.device + ")";
+
+        const statusLine =document.createElement("p");
+        statusLine.textContent = "Status: " + getStatus(found);
+        trackingResult.appendChild(parcelLine);
+        trackingResult.appendChild(statusLine);
     }
 });
