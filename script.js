@@ -27,8 +27,8 @@ function showTime(){
 }
 showTime();
 setInterval(function(){
-    minutes += 1;
-    totalMinutes +=1;
+    minutes += 10;
+    totalMinutes +=10;
     if(minutes >= 18*60){
         day++;
         minutes = 9 * 60;
@@ -50,6 +50,7 @@ setInterval(function(){
     for(const entry of acceptedJobs){
         if(!entry.delivered && !entry.job.scam && getStatus(entry) === "Delivered"){
             entry.delivered = true;
+            refreshWorkbench();
             showNotice("Parcel delivered: " + entry.job.customer);
         }
     }
@@ -148,11 +149,42 @@ document.addEventListener("mouseup", function(){
 // job cards
 const jobList = document.getElementById("job-list");
 const acceptButton = document.getElementById("accept-button");
+const repairList = document.getElementById("repair-list");
 
 function addAcceptedLine(customer, trackingId){
     const line = document.createElement("p");
     line.textContent = customer + " - " + trackingId;
     document.getElementById("accepted-list").appendChild(line);
+}
+
+function refreshWorkbench(){
+    repairList.textContent ="";
+    let count = 0;
+    for(const entry of acceptedJobs){
+        if(entry.delivered === true && entry.repaired === false){
+            const row = document.createElement("div");
+            row.className = "repair-row";
+            
+            const details = document.createElement("p");
+            details.textContent = entry.job.customer + " - " + entry.job.device;
+
+            const repairButton = document.createElement("button");
+            repairButton.textContent = "Repair";
+
+            repairButton.addEventListener("click", function(){
+                console.log(entry.job.minigame);
+            });
+            row.appendChild(details);
+            row.appendChild(repairButton);
+            repairList.append(row);
+            count++;
+        }
+    }
+    if(count === 0){
+        const message = document.createElement("p");
+        message.textContent = "No parcels to repair yet. Check Tracking.";
+        repairList.appendChild(message);
+    }
 }
 
 function showJob(job) {
@@ -273,7 +305,7 @@ document.getElementById("accept-button").addEventListener("click",function(){
         trackingId: trackingId,
         acceptedAt: totalMinutes,
         delivered:false,
-        day:day
+        repaired: false
     });
     addAcceptedLine(chosenJob.customer, trackingId);
     document.getElementById("popup-story").textContent = "Accepted. Your tracking ID is " + trackingId;
@@ -324,3 +356,5 @@ trackButton.addEventListener("click", function(){
         trackingResult.appendChild(statusLine);
     }
 });
+
+refreshWorkbench();

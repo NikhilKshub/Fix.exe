@@ -74,7 +74,7 @@ body{
     left:350px;
 }
 
-.titlebar{
+.titlebar, .popup-bar{
     background: var(--title);
     color:var(--paper);
     display: flex;
@@ -184,19 +184,6 @@ h2{font-family:'Jersey 10', sans-serif;}
     border-radius: 7px;
 }
 
-.popup-bar{
-    background:var(--title);
-    color:var(--paper);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:6px 10px;
-    border-bottom: var(--border);
-    font-family:'Jersey 10', sans-serif;
-    font-size:22px;
-}
-
-/* titlebar and popup bar can share same code check it */
 #popup-box p{padding:0 20px;}
 #accept-button, #later-button{
     background: var(--paper);
@@ -283,4 +270,22 @@ h2{font-family:'Jersey 10', sans-serif;}
     border:var(--border);
     padding:6px 10px;
     font-family:'Courier Prime',monospace;
+}
+
+.repair-row{
+    border: var(--border);
+    padding:10px;
+    margin-bottom:10px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.repair-row button{
+    background:var(--paper);
+    border:var(--border);
+    font-family:'Jersey 10',sans-serif;
+    cursor:pointer;
+    padding:6px 14px;
+    font-size:20px;
 }
