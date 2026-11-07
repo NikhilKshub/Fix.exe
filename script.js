@@ -47,6 +47,12 @@ setInterval(function(){
         nextJobTime = minutes + 20 + Math.floor(Math.random()*70);
     }
     showTime();
+    for(const entry of acceptedJobs){
+        if(!entry.delivered && !entry.job.scam && getStatus(entry) === "Delivered"){
+            entry.delivered = true;
+            showNotice("Parcel delivered: " + entry.job.customer);
+        }
+    }
 }, 1000);
 
 function showMoney(){
@@ -272,7 +278,6 @@ document.getElementById("accept-button").addEventListener("click",function(){
     addAcceptedLine(chosenJob.customer, trackingId);
     document.getElementById("popup-story").textContent = "Accepted. Your tracking ID is " + trackingId;
     chosenCard.remove();
-    console.log(acceptedJobs);
     setTimeout(function(){
         document.getElementById("job-popup").hidden = true;
     },1500);
