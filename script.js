@@ -17,6 +17,12 @@ let chosenCard = null;
 const waitingJobs = jobs.slice();
 const virusSound = new Audio("assets/virussound.mp3");
 virusSound.volume = 0.4;
+const screenWidth = 240;
+const screenHeight = 400;
+const picture = document.createElement("canvas");
+picture.width = screenWidth;
+picture.height = screenHeight;
+const pictureCtx = picture.getContext("2d");
 
 // time 
 function showTime(){
@@ -204,14 +210,52 @@ function startRepair(entry) {
     }
 }
 
+function drawPicture(){
+    pictureCtx.fillStyle = "#5fa8a0";
+    pictureCtx.fillRect(0, 0, screenWidth, screenHeight);
+    const iconColors = ["#c45538", "#d9a22b", "#7a9a4a", "#e9dfc8", "#c45538", "#d9a22b"];
+    const iconNames = ["Mail", "Maps", "Music", "Notes", "Photos", "Clock"];
+
+    for(let i=0; i<6; i++){
+        const column = i%2;
+        const row = Math.floor(i / 2);
+
+        const x = 36 + column * 96;
+        const y = 40 + row * 110;
+
+        pictureCtx.fillStyle = iconColors[i];
+        pictureCtx.lineWidth = 3;
+        pictureCtx.strokeStyle = "#2b2622";
+
+        pictureCtx.beginPath();
+        pictureCtx.roundRect(x, y, 72, 72, 16);
+        pictureCtx.fill();
+        pictureCtx.stroke();
+
+        pictureCtx.fillStyle = "#2b2622";
+        pictureCtx.beginPath();
+        pictureCtx.arc(x + 36, y + 36, 12, 0, Math.PI * 2);
+        pictureCtx.fill();
+
+        pictureCtx.fillStyle = "#2b2622";
+        pictureCtx.beginPath();
+        pictureCtx.arc(x+36, y+36, 12, 0, Math.PI * 2);
+        pictureCtx.fill();
+
+        pictureCtx.fillStyle = "#2b2622";
+        pictureCtx.font = "16px monospace";
+        pictureCtx.textAlign = "center";
+        pictureCtx.fillText(iconNames[i], x + 36, y + 94);
+    }
+}
+drawPicture();
+
+
 function closeStage(){
     stage.hidden = true;
     frequencyGame.hidden = true;
     refreshWorkbench();
 }
-
-
-
 
 function showJob(job) {
     const card = document.createElement("div");
@@ -388,3 +432,8 @@ trackButton.addEventListener("click", function(){
 });
 
 refreshWorkbench();
+
+
+
+
+document.getElementById("static-canvas").getContext("2d").drawImage(picture, 0, 0);
