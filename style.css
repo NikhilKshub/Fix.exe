@@ -255,3 +255,32 @@ h2{font-family:'Jersey 10', sans-serif;}
     font-size: 22px;
 }
 .hack-body{padding:12px;}
+
+/* tracking window */
+#tracking-input{
+    background: var(--paper);
+    border: var(--border);
+    font-family:'Courier Prime',monospace;
+    padding:6px;
+    font-size: 18px;
+}
+#track-button{
+    background:var(--paper);
+    border:var(--border);
+    font-family: 'Jersey 10', sans-serif;
+    cursor:pointer;
+    font-size:18px;
+    border-radius:6px;
+}
+#tracking-result{
+    margin-top:12px;
+    border:var(--border);
+    padding:10px;
+}
+
+.address-bar{
+    background:var(--paper);
+    border:var(--border);
+    padding:6px 10px;
+    font-family:'Courier Prime',monospace;
+}

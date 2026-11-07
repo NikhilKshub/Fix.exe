@@ -280,3 +280,26 @@ document.getElementById("popup-link").addEventListener("click", function(){
         startHack();
     }
 });
+
+const trackingInput = document.getElementById("tracking-input");
+const trackButton = document.getElementById("track-button");
+const trackingResult = document.getElementById("tracking-result");
+
+trackButton.addEventListener("click", function(){
+    const typedId = trackingInput.value.trim().toUpperCase();
+
+    let found = null;
+
+    for (const entry of acceptedJobs) {
+        if (entry.trackingId === typedId) {
+            found = entry;
+            break;
+        }
+    }
+
+    if (found === null) {
+        trackingResult.textContent = "No parcel found for this ID.";
+    } else {
+        trackingResult.textContent = "Parcel for " + found.job.customer + " (" + found.job.device + ")";
+    }
+});
