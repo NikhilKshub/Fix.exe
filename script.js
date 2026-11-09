@@ -35,6 +35,17 @@ const sliderStatic = document.getElementById("slider-static");
 const sliderRoll = document.getElementById("slider-roll");
 const signalText = document.getElementById("signal-text");
 let frequencySolved = false;
+const cols = 80;
+const rows = 50;
+const cell = 8;
+let grid = [];
+let player = { x: 0, y:0};
+let enemies = [];
+let direction = "";
+let isDrawing = false;
+let lives = 3;
+let recoveryTimer = null;
+const targetPercent = 75;
 
 // time 
 function showTime(){
@@ -46,8 +57,8 @@ function showTime(){
 }
 showTime();
 setInterval(function(){
-    minutes += 1;
-    totalMinutes +=1;
+    minutes += 10;
+    totalMinutes +=10;
     if(minutes >= 18*60){
         day++;
         minutes = 9 * 60;
@@ -308,6 +319,32 @@ function drawPhone(){
     signalText.textContent = "Signal: " + signal + "%";
 }
 
+function makeGrid(){
+    grid = [];
+    for(let y=0; y<rows; y++){
+        const line = [];
+        for(let x=0; x<cols; x++){
+            if(x===0 || y===0 || x===cols - 1 || y===rows - 1){
+                line.push(1);
+            } else {
+                line.push(0);
+            }
+        }
+        grid.push(line);
+    }
+}
+
+function getPercent(){
+    let count = 0;
+    for(let y = 1; y < rows - 1; y++){
+        for(let x = 1; x < cols - 1; x++){
+            if(grid[y][x] === 1){
+                count++;
+            }
+        }
+    }
+    return Math.floor(count / ((cols - 2) * (rows - 2)) * 100);
+}
 
 function closeStage(){
     clearInterval(frequencyTimer);

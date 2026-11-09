@@ -382,3 +382,35 @@ h2{font-family:'Jersey 10', sans-serif;}
     font-size: 28px;
 }
 
+.recovery-window{
+    background:var(--paper);
+    border:var(--border);
+    border-radius:8px;
+    box-shadow:8px 8px 0 var(--title);
+    width: 1122px;
+    height: 665px;
+}
+
+.recovery-bar{
+    background:var(--title);
+    color:var(--paper);
+    padding:6px 10px;
+    border-bottom:var(--border);
+    font-family:'Jersey 10', sans-serif;
+    font-size:22px;
+    cursor:default;
+}
+
+#recovery-canvas{
+    display:block;
+    height:55vh;
+    width:auto;
+}
+
+.recovery-info{
+    display: flex;
+    justify-content: space-between;
+    padding:8px 14px;
+    font-family:'Jersey 10', sans-serif;
+    font-size:26px;
+}
