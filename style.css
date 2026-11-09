@@ -387,8 +387,6 @@ h2{font-family:'Jersey 10', sans-serif;}
     border:var(--border);
     border-radius:8px;
     box-shadow:8px 8px 0 var(--title);
-    width: 1122px;
-    height: 665px;
 }
 
 .recovery-bar{
@@ -403,7 +401,7 @@ h2{font-family:'Jersey 10', sans-serif;}
 
 #recovery-canvas{
     display:block;
-    height:55vh;
+    height:calc(100vh-340px);
     width:auto;
 }
 
