@@ -37,7 +37,7 @@ const signalText = document.getElementById("signal-text");
 let frequencySolved = false;
 const cols = 80;
 const rows = 50;
-const cell = 12;
+const cell = 8;
 let grid = [];
 let player = { x: 0, y:0};
 let enemies = [];
@@ -247,7 +247,7 @@ function startRecovery(entry){
     stage.hidden = false;
     recoveryGame.hidden = false;
     caption.textContent = "Move with the arrow keys. Close off areas to recover the picture. Avoid the viruses.";
-    recoveryPhoto.src = recoveryPhotos[Math.floor(Math.random() * recoveryPhotos.length)];
+    recoveryPhoto.src = recoveryPhotos[Math.floor(Math.random() * recoveryPhoto.length)];
     makeGrid();
     player.x = 0;
     player.y = 0;
