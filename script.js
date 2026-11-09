@@ -487,16 +487,48 @@ function loseLife(){
     direction = "";
 }
 
+function floodFrom(startX, startY, reached){
+    const stack = [[startX, startY]];
+    while(stack.length > 0){
+        const spot = stack.pop();
+        const x = spot[0];
+        const y = spot[1];
+        if(reached[y][x] || grid[y][x] !== 0){
+            continue;
+        }
+        reached[y][x] = true;
+        stack.push([x + 1, y]);
+        stack.push([x - 1, y]);
+        stack.push([x, y + 1]);
+        stack.push([x, y - 1]);
+    }
+}
+
 function finishTrail(){
-    for(let y = 0; y<rows; y++){
-        for(let x = 0; x<cols; x++){
+    for(let y = 0; y < rows; y++){
+        for(let x = 0; x < cols; x++){
             if(grid[y][x] === 2){
+                grid[y][x] = 1;
+            }
+        }
+    }
+    const reached = [];
+    for(let y = 0; y < rows; y++){
+        reached.push(new Array(cols).fill(false));
+    }
+    for(const enemy of enemies){
+        floodFrom(enemy.x, enemy.y, reached);
+    }
+    for(let y = 0; y < rows; y++){
+        for(let x = 0; x < cols; x++){
+            if(grid[y][x] === 0 && reached[y][x] === false){
                 grid[y][x] = 1;
             }
         }
     }
     isDrawing = false;
 }
+
 
 function movePlayer(){
     if(direction === "") return;
