@@ -242,7 +242,20 @@ function startFrequency(){
 
 }
 
-
+function startRecovery(entry){
+    repairEntry = entry;
+    stage.hidden = false;
+    recoveryGame.hidden = false;
+    caption.textContent = "Move with the arrow keys. Close off areas to recover the picture. Avoid the viruses.";
+    recoveryPhoto.src = recoveryPhotos[Math.floor(Math.random() * recoveryPhotos.length)];
+    makeGrid();
+    player.x = 0;
+    player.y = 0;
+    direction = "";
+    isDrawing = false;
+    lives = 3;
+    drawRecovery();
+}
 
 
 function startRepair(entry) {
@@ -253,7 +266,7 @@ function startRepair(entry) {
         caption.textContent = "Adjust the sliders until the picture is still and clear.";
         startFrequency();
     } else {
-        showNotice("Data recovery repairs come in the next phase");
+        startRecovery(entry);
     }
 }
 
@@ -383,13 +396,13 @@ function drawRecovery(){
     percentText.textContent = "Recovered: " + getPercent() + "%";
 }
 
-
 function closeStage(){
     clearInterval(frequencyTimer);
+    clearInterval(recoveryTimer);
     stage.hidden = true;
     frequencyGame.hidden = true;
+    recoveryGame.hidden = true;
     refreshWorkbench();
-
 }
 
 function checkFrequency(){
