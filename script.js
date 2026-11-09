@@ -45,7 +45,8 @@ let direction = "";
 let isDrawing = false;
 let lives = 3;
 let recoveryTimer = null;
-const targetPercent = 75;
+let recoveryWon = false;
+const targetPercent = 88;
 const keyDirections = {
     ArrowUp: "up",
     w:"up",
@@ -280,6 +281,7 @@ function startFrequency(){
 }
 
 function startRecovery(entry){
+    recoveryWon = false;
     repairEntry = entry;
     stage.hidden = false;
     recoveryGame.hidden = false;
@@ -427,30 +429,16 @@ function makeGrid(){
     }
 }
 
-function isInPicture(x,y){
-    return(
-        x * cell >= photoX &&
-        x * cell <= photoX + photoW &&
-        y * cell >= photoY &&
-        y * cell < photoY + photoH
-    );
-}
-
 function getPercent(){
     let count = 0;
-    let total = 0;
-    for(let y = 1; y<rows - 1; y++){
-        for(let x=1; x<cols - 1; x++){
-            if(isInPicture(x, y)){
-                total++;
-                if(grid[y][x] === 1){
-                    count++;
-                }
+    for(let y = 1; y < rows - 1; y++){
+        for(let x = 1; x < cols - 1; x++){
+            if(grid[y][x] === 1){
+                count++;
             }
         }
     }
-    if(total === 0) return 0;
-    return Math.floor(count / total * 100);
+    return Math.floor(count / ((cols - 2) * (rows - 2)) * 100);
 }
 
 function drawRecovery(){
@@ -459,26 +447,29 @@ function drawRecovery(){
     if(recoveryPhoto.complete && recoveryPhoto.naturalWidth > 0){
         recoveryCtx.drawImage(recoveryPhoto, photoX, photoY, photoW, photoH);
     }
-    for(let y = 0; y<rows; y++){
-        for(let x =0; x<cols; x++ ){
-            if(grid[y][x] === 0){
-                recoveryCtx.fillStyle = "#1d1a17";
-                recoveryCtx.fillRect(x * cell, y * cell, cell, cell);
-            }
-            if(grid[y][x] === 2){
-                recoveryCtx.fillStyle = "#d9a22b";
-                recoveryCtx.fillRect(x * cell, y * cell, cell, cell);
+    if(recoveryWon === false){
+        for(let y = 0; y<rows; y++){
+            for(let x = 0; x<cols; x++){
+                if(grid[y][x] === 0){
+                    recoveryCtx.fillStyle = "#1d1a17";
+                    recoveryCtx.fillRect(x * cell, y * cell, cell, cell);
+                }
+                if(grid[y][x] === 2){
+                    recoveryCtx.fillStyle = "#d9a22b";
+                    recoveryCtx.fillRect(x * cell, y * cell, cell, cell);
+                }
             }
         }
-    }
-    recoveryCtx.fillStyle = "#5fa8a0";
-    recoveryCtx.fillRect(player.x * cell - 1, player.y * cell - 1, cell +2, cell+2);
-    recoveryCtx.fillStyle = "#c45538";
-    for(const enemy of enemies){
-        recoveryCtx.fillRect(enemy.x * cell - 1, enemy.y * cell - 1, cell + 2, cell + 2);
+        recoveryCtx.fillStyle = "#5fa8a0";
+        recoveryCtx.fillRect(player.x * cell - 1, player.y * cell - 1, cell +2, cell+2);
+        recoveryCtx.fillStyle = "#c45538";
+        for(const enemy of enemies){
+            recoveryCtx.fillRect(enemy.x * cell - 1, enemy.y * cell - 1, cell + 2, cell + 2);
+        }
     }
     livesText.textContent = "♥ ".repeat(lives);
-    percentText.textContent = "Recovered: " + getPercent() + "%";
+    const shown = recoveryWon ? 100 : getPercent();
+    percentText.textContent = "Recovered: " + shown + "%";
 }
 
 function loseLife(){
@@ -599,11 +590,13 @@ function updateRecovery(){
 
 function winRecovery(){
     clearInterval(recoveryTimer);
+    recoveryWon = true;
+    drawRecovery();
     money += repairEntry.job.pay;
     showMoney();
     repairEntry.repaired = true;
     caption.textContent = "Data recovered! +$" + repairEntry.job.pay;
-    setTimeout(closeStage, 2000);
+    setTimeout(closeStage, 3500);
 }
 
 function failRecovery(){
