@@ -485,6 +485,9 @@ function loseLife(){
     player.y = 0;
     isDrawing = false;
     direction = "";
+    if(lives === 0){
+        failRecovery();
+    }
 }
 
 function floodFrom(startX, startY, reached){
@@ -579,6 +582,24 @@ function updateRecovery(){
     movePlayer();
     moveEnemies();
     drawRecovery();
+    if(getPercent() >= targetPercent){
+        winRecovery();
+    }
+}
+
+function winRecovery(){
+    clearInterval(recoveryTimer);
+    money += repairEntry.job.pay;
+    showMoney();
+    repairEntry.repaired = true;
+    caption.textContent = "Data recovered! +$" + repairEntry.job.pay;
+    setTimeout(closeStage, 2000);
+}
+
+function failRecovery(){
+    clearInterval(recoveryTimer);
+    caption.textContent = "Recovery failed. The device is still on your workbench.";
+    setTimeout(closeStage, 2000);
 }
 
 function closeStage(){
