@@ -212,7 +212,11 @@ document.addEventListener("keydown", function(event){
         direction = dir;
     }
 });
-
+document.addEventListener("keyup", function(event){
+    if(keyDirections[event.key] === direction){
+        direction = "";
+    }
+});
 
 function addAcceptedLine(customer, trackingId){
     const line = document.createElement("p");
@@ -279,6 +283,7 @@ function startRecovery(entry){
     isDrawing = false;
     lives = 3;
     drawRecovery();
+    recoveryTimer = setInterval(updateRecovery, 60);
 }
 
 
@@ -452,6 +457,61 @@ function drawRecovery(){
     recoveryCtx.fillRect(player.x * cell - 1, player.y * cell - 1, cell +2, cell+2);
     livesText.textContent = "♥ ".repeat(lives);
     percentText.textContent = "Recovered: " + getPercent() + "%";
+}
+
+function loseLife(){
+    lives--;
+    for(let y = 0; y<rows; y++){
+        for(let x = 0; x<cols; x++){
+            if(grid[y][x] === 2){
+                grid[y][x] = 0;
+            }
+        }
+    }
+    player.x = 0;
+    player.y = 0;
+    isDrawing = false;
+    direction = "";
+}
+
+function finishTrail(){
+    for(let y = 0; y<rows; y++){
+        for(let x = 0; x<cols; x++){
+            if(grid[y][x] === 2){
+                grid[y][x] = 1;
+            }
+        }
+    }
+    isDrawing = false;
+}
+
+function movePlayer(){
+    if(direction === "") return;
+    const step = moves[direction];
+    const nextX = player.x + step[0];
+    const nextY = player.y + step[1];
+    if(nextX < 0 || nextX >= cols || nextY < 0 || nextY >= rows){
+        return;
+    }
+    const target = grid[nextY][nextX];
+    if(target === 2){
+        loseLife();
+        return;
+    }
+    if(target === 0){
+        grid[nextY][nextX] = 2;
+        isDrawing = true;
+    }
+    player.x = nextX;
+    player.y = nextY;
+    if(target === 1 && isDrawing === true){
+        finishTrail();
+    }
+}
+
+function updateRecovery(){
+    movePlayer();
+    drawRecovery();
 }
 
 function closeStage(){
