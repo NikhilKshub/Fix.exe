@@ -46,6 +46,22 @@ let isDrawing = false;
 let lives = 3;
 let recoveryTimer = null;
 const targetPercent = 75;
+const keyDirections = {
+    ArrowUp: "up",
+    w:"up",
+    ArrowDown: "down",
+    s: "down",
+    ArrowLeft: "left",
+    a: "left",
+    ArrowRight: "right",
+    d: "right"
+};
+const moves ={
+    up: [0, -1],
+    down: [0, 1],
+    left: [-1, 0],
+    right: [1, 0]
+};
 
 // time 
 function showTime(){
@@ -189,6 +205,14 @@ const recoveryCtx = recoveryCanvas.getContext("2d");
 const livesText = document.getElementById("lives-text");
 const percentText = document.getElementById("percent-text");
 
+document.addEventListener("keydown", function(event){
+    if(recoveryGame.hidden) return;
+    const dir = keyDirections[event.key];
+    if(dir){
+        direction = dir;
+    }
+});
+
 
 function addAcceptedLine(customer, trackingId){
     const line = document.createElement("p");
@@ -247,8 +271,7 @@ function startRecovery(entry){
     stage.hidden = false;
     recoveryGame.hidden = false;
     caption.textContent = "";
-    // recoveryPhoto.src = recoveryPhotos[Math.floor(Math.random() * recoveryPhotos.length)];
-    recoveryPhoto.src = recoveryPhotos[0];
+    recoveryPhoto.src = recoveryPhotos[Math.floor(Math.random() * recoveryPhotos.length)];
     makeGrid();
     player.x = 0;
     player.y = 0;
