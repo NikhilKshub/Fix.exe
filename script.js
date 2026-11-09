@@ -212,6 +212,14 @@ function startRepair(entry) {
 
 const iconColors = ["#c45538", "#d9a22b", "#7a9a4a", "#e9dfc8", "#c45538", "#d9a22b"];
 const iconNames = ["Mail","Maps","Music","Notes","Photos","Clock"];
+const iconImages =[];
+
+for(const name of iconNames){
+    const img = new Image();
+    img.src = "assets/" + name.toLowerCase() + ".png";
+    img.onload = drawPicture;
+    iconImages.push(img); 
+}
 
 function drawPicture(){
     pictureCtx.fillStyle = "#5fa8a0";
@@ -229,6 +237,10 @@ function drawPicture(){
         pictureCtx.roundRect(x, y, 72, 72, 16);
         pictureCtx.fill();
         pictureCtx.stroke();
+
+        if(iconImages[i].complete){
+            pictureCtx.drawImage(iconImages[i], x + 16, y + 16, 40, 40);
+        }
 
         picture.fillStyle = "#2b2622";
         pictureCtx.font = "16px monospace";
