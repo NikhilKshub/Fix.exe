@@ -37,7 +37,7 @@ const signalText = document.getElementById("signal-text");
 let frequencySolved = false;
 const cols = 80;
 const rows = 50;
-const cell = 8;
+const cell = 12;
 let grid = [];
 let player = { x: 0, y:0};
 let enemies = [];
@@ -57,8 +57,8 @@ function showTime(){
 }
 showTime();
 setInterval(function(){
-    minutes += 10;
-    totalMinutes +=10;
+    minutes += 50;
+    totalMinutes +=50;
     if(minutes >= 18*60){
         day++;
         minutes = 9 * 60;
@@ -246,8 +246,9 @@ function startRecovery(entry){
     repairEntry = entry;
     stage.hidden = false;
     recoveryGame.hidden = false;
-    caption.textContent = "Move with the arrow keys. Close off areas to recover the picture. Avoid the viruses.";
-    recoveryPhoto.src = recoveryPhotos[Math.floor(Math.random() * recoveryPhoto.length)];
+    caption.textContent = "";
+    // recoveryPhoto.src = recoveryPhotos[Math.floor(Math.random() * recoveryPhotos.length)];
+    recoveryPhoto.src = recoveryPhotos[0];
     makeGrid();
     player.x = 0;
     player.y = 0;
@@ -344,8 +345,26 @@ const recoveryPhotos = [
     "assets/photo2.jpg",
     "assets/photo3.jpg"
 ];
+const blankColor = "#2c4a47";
+let photoX = 0;
+let photoY = 0;
+let photoW = 0;
+let photoH = 0;
 const recoveryPhoto = new Image();
-recoveryPhoto.onload = drawRecovery;
+recoveryPhoto.onload = function(){
+    const areaW = (cols - 2) * cell;
+    const areaH = (rows - 2) * cell;
+    const scale = Math.min(
+        areaW / recoveryPhoto.naturalWidth,
+        areaH / recoveryPhoto.naturalHeight
+    );
+    photoW = recoveryPhoto.naturalWidth * scale;
+    photoH = recoveryPhoto.naturalHeight * scale;
+    photoX = cell + (areaW - photoW) / 2;
+    photoY = cell + (areaH - photoH) / 2;
+    drawRecovery();
+};
+
 
 function makeGrid(){
     grid = [];
@@ -362,21 +381,37 @@ function makeGrid(){
     }
 }
 
+function isInPicture(x,y){
+    return(
+        x * cell >= photoX &&
+        x * cell <= photoX + photoW &&
+        y * cell >= photoY &&
+        y * cell < photoY + photoH
+    );
+}
+
 function getPercent(){
     let count = 0;
-    for(let y = 1; y < rows - 1; y++){
-        for(let x = 1; x < cols - 1; x++){
-            if(grid[y][x] === 1){
-                count++;
+    let total = 0;
+    for(let y = 1; y<rows - 1; y++){
+        for(let x=1; x<cols - 1; x++){
+            if(isInPicture(x, y)){
+                total++;
+                if(grid[y][x] === 1){
+                    count++;
+                }
             }
         }
     }
-    return Math.floor(count / ((cols - 2) * (rows - 2)) * 100);
+    if(total === 0) return 0;
+    return Math.floor(count / total * 100);
 }
 
 function drawRecovery(){
-    if(recoveryPhoto.complete){
-        recoveryCtx.drawImage(recoveryPhoto, 0, 0, cols * cell, rows * cell);
+    recoveryCtx.fillStyle = blankColor;
+    recoveryCtx.fillRect(0, 0, cols * cell, rows * cell);
+    if(recoveryPhoto.complete && recoveryPhoto.naturalWidth > 0){
+        recoveryCtx.drawImage(recoveryPhoto, photoX, photoY, photoW, photoH);
     }
     for(let y = 0; y<rows; y++){
         for(let x =0; x<cols; x++ ){
