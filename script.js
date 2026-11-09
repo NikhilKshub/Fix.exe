@@ -183,7 +183,11 @@ const repairList = document.getElementById("repair-list");
 const stage = document.getElementById("repair-stage");
 const frequencyGame = document.getElementById("frequency-game");
 const caption = document.getElementById("stage-caption");
-
+const recoveryGame = document.getElementById("recovery-game");
+const recoveryCanvas = document.getElementById("recovery-canvas");
+const recoveryCtx = recoveryCanvas.getContext("2d");
+const livesText = document.getElementById("lives-text");
+const percentText = document.getElementById("percent-text");
 
 
 function addAcceptedLine(customer, trackingId){
@@ -237,6 +241,9 @@ function startFrequency(){
     frequencyTimer = setInterval(drawPhone, 60);
 
 }
+
+
+
 
 function startRepair(entry) {
     if (entry.job.minigame === "frequency") {
@@ -319,6 +326,14 @@ function drawPhone(){
     signalText.textContent = "Signal: " + signal + "%";
 }
 
+const recoveryPhotos = [
+    "assets/photo1.jpg",
+    "assets/photo2.jpg",
+    "assets/photo3.jpg"
+];
+const recoveryPhoto = new Image();
+recoveryPhoto.onload = drawRecovery;
+
 function makeGrid(){
     grid = [];
     for(let y=0; y<rows; y++){
@@ -345,6 +360,29 @@ function getPercent(){
     }
     return Math.floor(count / ((cols - 2) * (rows - 2)) * 100);
 }
+
+function drawRecovery(){
+    if(recoveryPhoto.complete){
+        recoveryCtx.drawImage(recoveryPhoto, 0, 0, cols * cell, rows * cell);
+    }
+    for(let y = 0; y<rows; y++){
+        for(let x =0; x<cols; x++ ){
+            if(grid[y][x] === 0){
+                recoveryCtx.fillStyle = "#1d1a17";
+                recoveryCtx.fillRect(x * cell, y * cell, cell, cell);
+            }
+            if(grid[y][x] === 2){
+                recoveryCtx.fillStyle = "#d9a22b";
+                recoveryCtx.fillRect(x * cell, y * cell, cell, cell);
+            }
+        }
+    }
+    recoveryCtx.fillStyle = "#5fa8a0";
+    recoveryCtx.fillRect(player.x * cell - 1, player.y * cell - 1, cell +2, cell+2);
+    livesText.textContent = "♥ ".repeat(lives);
+    percentText.textContent = "Recovered: " + getPercent() + "%";
+}
+
 
 function closeStage(){
     clearInterval(frequencyTimer);
