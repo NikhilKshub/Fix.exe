@@ -63,6 +63,14 @@ const moves ={
     right: [1, 0]
 };
 
+const opposite = {
+    up: "down",
+    down: "up",
+    left: "right",
+    right: "left"
+};
+let lastDirection = "";
+
 // time 
 function showTime(){
     const hours = Math.floor(minutes / 60);
@@ -208,6 +216,7 @@ const percentText = document.getElementById("percent-text");
 document.addEventListener("keydown", function(event){
     if(recoveryGame.hidden) return;
     const dir = keyDirections[event.key];
+    if(isDrawing && dir === opposite[lastDirection]) return;
     if(dir){
         direction = dir;
     }
@@ -552,6 +561,7 @@ function movePlayer(){
     }
     player.x = nextX;
     player.y = nextY;
+    lastDirection = direction;
     if(target === 1 && isDrawing === true){
         finishTrail();
     }
