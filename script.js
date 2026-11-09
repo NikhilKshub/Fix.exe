@@ -31,10 +31,10 @@ let frequencyTimer = null;
 const phoneCanvas = document.getElementById("static-canvas");
 const phoneCtx = phoneCanvas.getContext("2d");
 const sliderWobble = document.getElementById("slider-wobble");
-const sliderStatic = document.getElementById("slider-roll");
+const sliderStatic = document.getElementById("slider-static");
 const sliderRoll = document.getElementById("slider-roll");
 const signalText = document.getElementById("signal-text");
-
+let frequencySolved = false;
 
 // time 
 function showTime(){
@@ -46,8 +46,8 @@ function showTime(){
 }
 showTime();
 setInterval(function(){
-    minutes += 10;
-    totalMinutes +=10;
+    minutes += 1;
+    totalMinutes +=1;
     if(minutes >= 18*60){
         day++;
         minutes = 9 * 60;
@@ -211,12 +211,29 @@ function refreshWorkbench(){
     }
 }
 
+function startFrequency(){
+    frequencySolved = false;
+    targetWobble = Math.floor(Math.random() * 81) + 10;
+    targetStatic = Math.floor(Math.random() * 81) + 10;
+    targetRoll = Math.floor(Math.random() * 81) + 10;
+    sliderWobble.value = Math.floor(Math.random() * 101);
+    sliderStatic.value = Math.floor(Math.random() * 101);
+    sliderRoll.value = Math.floor(Math.random() * 101);
+
+    sliderWobble.disabled = false;
+    sliderStatic.disabled = false;
+    sliderRoll.disabled = false;
+    frequencyTimer = setInterval(drawPhone, 60);
+
+}
+
 function startRepair(entry) {
     if (entry.job.minigame === "frequency") {
         repairEntry = entry;
         stage.hidden = false;
         frequencyGame.hidden = false;
         caption.textContent = "Adjust the sliders until the picture is still and clear.";
+        startFrequency();
     } else {
         showNotice("Data recovery repairs come in the next phase");
     }
@@ -254,12 +271,11 @@ function drawPicture(){
             pictureCtx.drawImage(iconImages[i], x + 16, y + 16, 40, 40);
         }
 
-        picture.fillStyle = "#2b2622";
+        pictureCtx.fillStyle = "#2b2622";
         pictureCtx.font = "16px monospace";
         pictureCtx.textAlign = "center";
         pictureCtx.fillText(iconNames[i], x + 36, y + 94);
     }
-    document.getElementById("static-canvas").getContext("2d").drawImage(picture, 0, 0);
 }
 drawPicture();
 
@@ -288,16 +304,41 @@ function drawPhone(){
         const y = Math.random() * screenHeight;
         phoneCtx.fillRect(x, y, 3, 3);
     }
-    const signal = Math.max(0, 100 - Math.round((wobbleOff + staticOff + rollOff) / 3));
+    const signal = Math.max(0, 100 - Math.ceil((wobbleOff + staticOff + rollOff) / 3));
     signalText.textContent = "Signal: " + signal + "%";
 }
 
 
 function closeStage(){
+    clearInterval(frequencyTimer);
     stage.hidden = true;
     frequencyGame.hidden = true;
     refreshWorkbench();
+
 }
+
+function checkFrequency(){
+    if(frequencySolved === true) return;
+    if(
+        offBy(sliderWobble, targetWobble) === 0 &&
+        offBy(sliderStatic, targetStatic) === 0 &&
+        offBy(sliderRoll, targetRoll) === 0
+    ){
+        frequencySolved = true;
+        sliderWobble.disabled = true;
+        sliderStatic.disabled = true;
+        sliderRoll.disabled = true;
+        money += repairEntry.job.pay;
+        showMoney();
+        repairEntry.repaired = true;
+        caption.textContent = "Signal restored! +$" + repairEntry.job.pay;
+        setTimeout(closeStage, 2000);
+    }
+}
+sliderWobble.addEventListener("input",checkFrequency);
+sliderStatic.addEventListener("input",checkFrequency);
+sliderRoll.addEventListener("input",checkFrequency);
+
 
 function showJob(job) {
     const card = document.createElement("div");
