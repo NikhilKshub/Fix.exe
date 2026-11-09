@@ -23,6 +23,18 @@ const picture = document.createElement("canvas");
 picture.width = screenWidth;
 picture.height = screenHeight;
 const pictureCtx = picture.getContext("2d");
+let targetWobble = 0;
+let targetStatic = 0;
+let targetRoll = 0;
+let wavePhase = 0;
+let frequencyTimer = null;
+const phoneCanvas = document.getElementById("static-canvas");
+const phoneCtx = phoneCanvas.getContext("2d");
+const sliderWobble = document.getElementById("slider-wobble");
+const sliderStatic = document.getElementById("slider-roll");
+const sliderRoll = document.getElementById("slider-roll");
+const signalText = document.getElementById("signal-text");
+
 
 // time 
 function showTime(){
@@ -250,6 +262,35 @@ function drawPicture(){
     document.getElementById("static-canvas").getContext("2d").drawImage(picture, 0, 0);
 }
 drawPicture();
+
+function offBy(slider, target){
+    return Math.max(0 , Math.abs(slider.value - target) - 4);
+}
+
+function drawPhone(){
+    const wobbleOff = offBy(sliderWobble, targetWobble);
+    const staticOff = offBy(sliderStatic, targetStatic);
+    const rollOff = offBy(sliderRoll, targetRoll);
+    const wobble = wobbleOff * 0.5;
+    const staticAmount = staticOff * 40;
+    const roll = rollOff * 0.8;
+
+    wavePhase += 0.3;
+    phoneCtx.clearRect(0, 0, screenWidth, screenHeight);
+
+    for(let y=0; y < screenHeight; y += 2){
+        const shift = Math.sin(y * 0.15 + wavePhase) * wobble;
+        phoneCtx.drawImage(picture, 0, y, screenWidth, 2, shift, y + roll, screenWidth, 2);
+    }
+    for(let i=0; i<staticAmount; i++){
+        phoneCtx.fillStyle = Math.random() < 0.5 ? "#e9dfc8" : "#2b2622";
+        const x = Math.random()*screenWidth;
+        const y = Math.random() * screenHeight;
+        phoneCtx.fillRect(x, y, 3, 3);
+    }
+    const signal = Math.max(0, 100 - Math.round((wobbleOff + staticOff + rollOff) / 3));
+    signalText.textContent = "Signal: " + signal + "%";
+}
 
 
 function closeStage(){
