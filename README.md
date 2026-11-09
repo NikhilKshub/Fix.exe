@@ -3,3 +3,5 @@ A browser game set inside a fake desktop OS. Accept repair jobs from customers o
 
 I am writing this here so I dont forget it later while writing credits 
 virus.mp3 audio is taken from [audio](https://www.myinstants.com/en/instant/virus-indian-song-76314/)
+
+icons from flaticon 
