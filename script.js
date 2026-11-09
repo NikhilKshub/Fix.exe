@@ -277,6 +277,15 @@ function startRecovery(entry){
     caption.textContent = "";
     recoveryPhoto.src = recoveryPhotos[Math.floor(Math.random() * recoveryPhotos.length)];
     makeGrid();
+    enemies=[];
+    for(let i=0; i<2; i++){
+        enemies.push({
+            x:Math.floor(Math.random() * (cols - 20)) + 10,
+            y:Math.floor(Math.random() * (rows - 20)) + 10,
+            dx: Math.random() < 0.5 ? 1 : -1,
+            dy: Math.random() < 0.5 ? 1 : -1
+        });
+    }
     player.x = 0;
     player.y = 0;
     direction = "";
@@ -455,6 +464,10 @@ function drawRecovery(){
     }
     recoveryCtx.fillStyle = "#5fa8a0";
     recoveryCtx.fillRect(player.x * cell - 1, player.y * cell - 1, cell +2, cell+2);
+    recoveryCtx.fillStyle = "#c45538";
+    for(const enemy of enemies){
+        recoveryCtx.fillRect(enemy.x * cell - 1, enemy.y * cell - 1, cell + 2, cell + 2);
+    }
     livesText.textContent = "♥ ".repeat(lives);
     percentText.textContent = "Recovered: " + getPercent() + "%";
 }
@@ -509,8 +522,30 @@ function movePlayer(){
     }
 }
 
+function moveEnemies(){
+    for(const enemy of enemies){
+        if(grid[enemy.y][enemy.x + enemy.dx] === 1){
+            enemy.dx = -enemy.dx;
+        }
+        if(grid[enemy.y + enemy.dy][enemy.x] === 1){
+            enemy.dy = -enemy.dy;
+        }
+        if(grid[enemy.y + enemy.dy][enemy.x + enemy.dx] === 1){
+            enemy.dx = -enemy.dx;
+            enemy.dy = -enemy.dy;
+        }
+        enemy.x += enemy.dx;
+        enemy.y += enemy.dy;
+        if(grid[enemy.y][enemy.x] === 2){
+            loseLife();
+            return;
+        }
+    }
+}
+
 function updateRecovery(){
     movePlayer();
+    moveEnemies();
     drawRecovery();
 }
 
