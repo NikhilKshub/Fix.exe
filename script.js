@@ -83,6 +83,7 @@ const introSlides=[
         text:"Accept a job and you get a tracking ID. Paste it into the Tracking app to follow your parcel. When it is delivered, it appears in the Workbench so you can repair it and get paid. If it says Packed wait some time, the game is not broken. The courier is just slow."
     }
 ];
+let fastParcelsLeft = 1;
 
 
 
@@ -160,10 +161,10 @@ function makeTrackingId(){
 
 function getStatus(entry){
     if(entry.job.scam === true) return "Cancelled by sender. Possible fraud.";
-    const age = totalMinutes - entry.acceptedAt;
-    if(age < 30)return "Packed";
-    if(age < 90)return "In transit";
-    if(age< 150)return "Out for delivery";
+    const progress = (totalMinutes - entry.acceptedAt) / entry.deliveryTime;
+    if(progress < 0.25) return "Packed";
+    if(progress < 0.6) return "In transit";
+    if(progress < 1) return "Out for delivery";
     return "Delivered";
 }
 
@@ -766,10 +767,16 @@ function startHack(){
 document.getElementById("accept-button").addEventListener("click",function(){
     acceptButton.disabled = true;
     const trackingId = makeTrackingId();
+    let deliveryTime = 80;
+    if(fastParcelsLeft > 0 && chosenJob.scam === false){
+        deliveryTime = 25;
+        fastParcelsLeft--;
+    }
     acceptedJobs.push({
         job:chosenJob,
         trackingId: trackingId,
         acceptedAt: totalMinutes,
+        deliveryTime: deliveryTime,
         delivered:false,
         repaired: false
     });
