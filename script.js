@@ -84,6 +84,7 @@ const introSlides=[
     }
 ];
 let fastParcelsLeft = 1;
+let popupLink = document.getElementById("popup-link")
 
 
 
@@ -677,9 +678,9 @@ function showJob(job) {
         document.getElementById("popup-story").textContent = job.story;
         document.getElementById("popup-contact").textContent = job.contact;
         if(job.link !== ""){
-            document.getElementById("popup-link").textContent = "see the damage: " + job.link;
+            popupLink.textContent = "link: " + job.link;
         } else {
-            document.getElementById("popup-link").textContent = "";
+            popupLink.textContent = "";
         }
         document.getElementById("popup-pay").textContent = "pay: $" + job.pay;
         document.getElementById("job-popup").hidden = false;

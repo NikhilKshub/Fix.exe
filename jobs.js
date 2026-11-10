@@ -113,5 +113,15 @@ const jobs = [
         minigame:"recovery",
         pay:110,
         scam:false
+    },
+    {
+        id:11,
+        customer: "Gregory W.",
+        device: "Premium tablet",
+        story: "Greetings, esteemed technician. I am a very real and very busy executive, and my premium tablet has stopped working. I will pay $400 for a single repair. Before I send it, please confirm your technician badge at the link below. This offer expires in 5 minutes.",
+        contact:"gregory.w@premium-tech-corp.top",
+        minigame:"frequency",
+        pay:400,
+        scam:true
     }
 ]
