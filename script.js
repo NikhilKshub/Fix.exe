@@ -286,7 +286,7 @@ function startRecovery(entry){
     stage.hidden = false;
     recoveryGame.hidden = false;
     caption.textContent = "";
-    recoveryPhoto.src = recoveryPhotos[Math.floor(Math.random() * recoveryPhotos.length)];
+    recoveryPhoto.src = entry.job.photo;
     makeGrid();
     enemies=[];
     for(let i=0; i<2; i++){
@@ -388,11 +388,6 @@ function drawPhone(){
     signalText.textContent = "Signal: " + signal + "%";
 }
 
-const recoveryPhotos = [
-    "assets/photo1.jpg",
-    "assets/photo2.jpg",
-    "assets/photo3.jpg"
-];
 const blankColor = "#2c4a47";
 let photoX = 0;
 let photoY = 0;
