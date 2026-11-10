@@ -71,6 +71,20 @@ const opposite = {
     right: "left"
 };
 let lastDirection = "";
+let gameStarted = false;
+let introIndex = 0;
+const introSlides=[
+    {
+        title:"Open for business",
+        text:"You run a tiny repair shop from one very suspicious computer. Each day runs from 09:00 to 18:00, which is about 9 real minutes. Open the Jobs app to see who needs help. Some customers are scammers, so read the stories carefully."
+    },
+    {
+        title:"The waiting game",
+        text:"Accept a job and you get a tracking ID. Paste it into the Tracking app to follow your parcel. When it is delivered, it appears in the Workbench so you can repair it and get paid. If it says Packed wait some time, the game is not broken. The courier is just slow."
+    }
+];
+
+
 
 // time 
 function showTime(){
@@ -82,6 +96,7 @@ function showTime(){
 }
 showTime();
 setInterval(function(){
+    if(gameStarted === false) return;
     minutes += 50;
     totalMinutes +=50;
     if(minutes >= 18*60){
@@ -213,6 +228,12 @@ const recoveryCanvas = document.getElementById("recovery-canvas");
 const recoveryCtx = recoveryCanvas.getContext("2d");
 const livesText = document.getElementById("lives-text");
 const percentText = document.getElementById("percent-text");
+const introPopup = document.getElementById("intro-popup");
+const introTitle = document.getElementById("intro-title");
+const introText = document.getElementById("intro-text");
+const introCount = document.getElementById("intro-count");
+const introNext = document.getElementById("intro-next");
+const introSkip = document.getElementById("intro-skip");
 
 document.addEventListener("keydown", function(event){
     if(recoveryGame.hidden) return;
@@ -806,4 +827,30 @@ trackButton.addEventListener("click", function(){
     }
 });
 
+function showIntroSlide(){
+    const slide = introSlides[introIndex];
+    introTitle.textContent = slide.text;
+    introText.textConten = slide.text;
+    introCount.textContent = (introIndex + 1) + " / " + introSlides.length;
+    introNext.textContent = introIndex === introSlides.length - 1 ? "Start" : "Next";
+}
+
+function closeIntro(){
+    introPopup.hidden = true;
+    gameStarted = true;
+}
+
+introNext.addEventListener("click",function(){
+    if(introIndex === introSlides.length - 1){
+        closeIntro();
+    } else {
+        introIndex++;
+        showIntroSlide();
+    }
+});
+introSkip.addEventListener("click",function(){
+    closeIntro();
+});
+
 refreshWorkbench();
+showIntroSlide();
