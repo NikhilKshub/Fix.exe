@@ -88,6 +88,9 @@ body{
     cursor : grab;
     user-select: none;
 }
+.popup-bar{
+    cursor:default;
+}
 .window-body{
     background: var(--paper);
     border: var(--border);

@@ -80,12 +80,11 @@ const introSlides=[
     },
     {
         title:"The waiting game",
-        text:"Accept a job and you get a tracking ID. Paste it into the Tracking app to follow your parcel. When it is delivered, it appears in the Workbench so you can repair it and get paid. If it says Packed wait some time, the game is not broken. The courier is just slow."
+        text:"Accept a job and you get a tracking ID. Paste it into the Tracking app to follow your parcel. When it is delivered, it appears in the Workbench so you can repair it and get paid. If it says Packed, give it a minute. The game is not broken. The courier is just slow."
     }
 ];
 let fastParcelsLeft = 1;
-let popupLink = document.getElementById("popup-link")
-
+const popupLink = document.getElementById("popup-link");
 
 
 // time 
@@ -99,8 +98,8 @@ function showTime(){
 showTime();
 setInterval(function(){
     if(gameStarted === false) return;
-    minutes += 50;
-    totalMinutes +=50;
+    minutes += 1;
+    totalMinutes +=1;
     if(minutes >= 18*60){
         day++;
         minutes = 9 * 60;
@@ -218,7 +217,7 @@ document.addEventListener("mouseup", function(){
     draggedWindow = null;
 })
 
-// job cards
+
 const jobList = document.getElementById("job-list");
 const acceptButton = document.getElementById("accept-button");
 const repairList = document.getElementById("repair-list");
@@ -764,8 +763,7 @@ function startHack(){
 }
 
 
-
-document.getElementById("accept-button").addEventListener("click",function(){
+acceptButton.addEventListener("click",function(){
     acceptButton.disabled = true;
     const trackingId = makeTrackingId();
     let deliveryTime = 80;
@@ -798,7 +796,7 @@ document.getElementById("popup-close").addEventListener("click", function(){
     document.getElementById("job-popup").hidden = true;
 })
 
-document.getElementById("popup-link").addEventListener("click", function(){
+popupLink.addEventListener("click", function(){
     if(chosenJob.scam){
         startHack();
     }
@@ -837,8 +835,8 @@ trackButton.addEventListener("click", function(){
 
 function showIntroSlide(){
     const slide = introSlides[introIndex];
-    introTitle.textContent = slide.text;
-    introText.textConten = slide.text;
+    introTitle.textContent = slide.title;
+    introText.textContent = slide.text;
     introCount.textContent = (introIndex + 1) + " / " + introSlides.length;
     introNext.textContent = introIndex === introSlides.length - 1 ? "Start" : "Next";
 }
